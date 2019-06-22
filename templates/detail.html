@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{article.title}}	
+{% endblock title %}
+
+{% block body %}
+    <div class="row">
+      <div class="col-lg-8">
+            <h1 class="mt-4">{{article.title}}</h1>
+            <p class="lead">
+            <i class="fas fa-grip-lines"></i>
+            Kategori: 
+            {% if article.category.parent %}
+                <a id = "a01" href = "/{{article.category.parent.slug}}">{{article.category.parent}}</a> / <a id = "a01" href="/{{article.category.slug}}">{{article.category.slug2}}</a>
+            {% else %}
+                <a id = "a01" href="/{{article.category.slug}}">{{article.category}}</a>
+            {% endif %}
+            , {{article.created_date}}
+            , <a id = "a01" href="#">{{article.author}}</a>
+            </p>
+            <hr>
+            {% if article.article_image %}
+                <img class="img-fluid rounded" src="{{article.article_image.url}}" alt="">
+            {% endif %}
+            <p class="lead">
+                {{article.content|safe}}
+            </p>
+            <hr>
+            <h5>Yorumlar</h5>
+            <br>
+            {% if comments %}
+                {% for comment in comments %}
+                    <div class="media mb-4">
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" l>
+                        <div class="media-body">
+                            <h5 class="mt-0">{{comment.comment_author}}</h5>
+                            {{comment.comment_content}}
+                            <p style="float: right;">{{comment.created_date}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-danger">Henüz bir yorum bulunmuyor.</div>
+            {% endif %}
+            <div class="card my-4">
+                <h5 class="card-header">Yorum bırakın</h5>
+                <div class="card-body" style="padding: 15px;">
+                    <form method="POST" action="{% url 'article:comment' article.id %}">
+                        {% csrf_token %}
+                        <label>İsim:</label>
+                        <div class="form-group">
+                            <input type="text" class="form-control" style="width: 250px;" name="comment_author">
+                        </div>
+                        <label>Yorum:</label>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" name="comment_context"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger" style="float: right;">Ekle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

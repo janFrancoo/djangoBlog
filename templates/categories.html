@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+        JFBlog - Kategoriler
+{% endblock title %}
+
+{% block body %}
+   
+    {% for category in categories %}
+
+        <div class="card my-4" style = "width: 330px; float:left;">
+            <h5 class="card-header"> <i class="fas fa-list-ul"></i> <a id = "a01" href = "/{{category.slug}}">{{category.slug2}}</a></h5>
+            <div class="card-body" style="padding: 15px;">
+                {% for article in articles %}
+                    {% if article.category == category %}
+                        <i class="fas fa-dot-circle"></i> <a id = "a01" href="/{{article.category.slug}}/{{article.seo}}">{{article}}</a>
+                        <br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+    {% endfor %}
+
+{% endblock body %}

@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+JFBlog - Son Yazılar
+{% endblock title %}
+
+{% block body %}
+    {% if keyword %}
+        <h3>Aranan kelime: {{keyword}}</h3>
+    {% endif %}
+    <br>
+    {% if contacts %}
+        <div class="row">
+            <div class="col-lg-8">
+                {% for article in contacts %}
+                    <h3 id = "h01" ><a id = "a01" href="/{{article.category.slug}}/{{article.seo}}">{{article.title}}</a></h3>
+                    {% if article.category.parent %}
+                        <i class="fas fa-grip-lines"></i> Kategori: <a id = "a01" href = "/{{article.category.parent.slug}}">{{article.category.parent}}</a> / <a id = "a01" href="/{{article.category.slug}}">{{article.category.slug2}}</a>, {{article.created_date}}
+                    {% else %}
+                        <i class="fas fa-grip-lines"></i> Kategori: <a id = "a01" href="/{{article.category.slug}}">{{article.category.slug2}}</a>, {{article.created_date}}
+                    {% endif %}
+                    {% if article.article_image %}
+                        <img class="img-fluid rounded" src="{{article.article_image.url}}" alt="">
+                    {% endif %}
+                    <p class="lead">
+                        {{article.content|safe|truncatewords:25}} 
+                        <a id = "a01" href="/{{article.category.slug}}/{{article.seo}}" style = "padding-left: 15px;">Devamını Oku</a>
+                    </p>
+                    <span><i class="fas fa-user-edit"></i> {{article.author}}  |  <i class="fa fa-eye"></i> {{article.views}}  |  <i class="fas fa-comments"></i> {{article.comments.all.count}} | <i class="fas fa-stopwatch"></i> {{article.read}} min read</span>
+                    <hr>
+                {% endfor %}
+                <span>
+                    {% if contacts.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ contacts.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Sayfa {{ contacts.number }}
+                    </span>
+            
+                    {% if contacts.has_next %}
+                        <a href="?page={{ contacts.next_page_number }}">next</a>
+                        <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-danger">Herhangi bir yazı bulunmuyor!</div>
+    {% endif %}
+    
+{% endblock body %}

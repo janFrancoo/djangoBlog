@@ -1,0 +1,55 @@
+{% extends 'layout_index.html' %}
+
+{% block title %}
+        JFBlog - Index
+{% endblock title %}
+
+{% block body %}
+
+    <div class="card my-4" style = "width: 250px; float:left;">
+        <h5 class="card-header"><i class="fas fa-list-ul"></i> Kategoriler</h5>
+        <div class="card-body" style="padding: 15px;">
+            {% for category in categories %}
+                <a id = "a01" href = "/{{category.slug}}">{{category.slug2}}</a>
+                <hr>
+                {% for article in articles %}
+                    {% if article.category == category %}
+                        <i class="fas fa-dot-circle"></i> <a id = "a01" href="/{{article.category.slug}}/{{article.seo}}">{{article}}</a>
+                        <br>
+                    {% endif %}
+                {% endfor %}
+                <hr>
+            {% endfor %}
+        </div>
+	<h5 class="card-header"><i class="fas fa-list-ul"></i> Son Yorumlar</h5>
+        <div class="card-body" style="padding: 15px;">
+            {% for comment in comments%}
+                <i class="far fa-comment"></i> {{comment.comment_content}} | <a id = "a01" href = "/{{comment.article.category.slug}}/{{comment.article.seo}}">{{comment.article}}</a>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+   <br>
+    <div class="row" style = "padding-left: 25px;">
+        <div class="col-lg-8">
+            {% for article in contacts %}
+                <h3 id = "h01" ><a id = "a01" href="/{{article.category.slug}}/{{article.seo}}">{{article.title}}</a></h3>
+                {% if article.category.parent %}
+                    <i class="fas fa-grip-lines"></i> Kategori: <a id = "a01" href = "/{{article.category.parent.slug}}">{{article.category.parent}}</a> / <a id = "a01" href="/{{article.category.slug}}">{{article.category.slug2}}</a>, {{article.created_date}}
+                {% else %}
+                    <i class="fas fa-grip-lines"></i> Kategori: <a id = "a01" href="/{{article.category.slug}}">{{article.category}}</a>, {{article.created_date}}
+                {% endif %}
+                {% if article.article_image %}
+                    <img class="img-fluid rounded" src="{{article.article_image.url}}" alt="">
+                {% endif %}
+                <p class="lead">
+                    {{article.content|safe|truncatewords:45}} 
+                    <a id = "a01" href="/{{article.category.slug}}/{{article.seo}}" style = "padding-left: 15px;">Devamını Oku</a>
+                </p>
+                <span><i class="fas fa-user-edit"></i> {{article.author}}  |  <i class="fa fa-eye"></i> {{article.views}}  |  <i class="fas fa-comments"></i> {{article.comments.all.count}} | <i class="fas fa-stopwatch"></i> {{article.read}} min read</span>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock body %}

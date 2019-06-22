@@ -1,0 +1,73 @@
+{% extends "layout_index.html" %}
+
+{% block title %}
+	{{categoryName.slug2}}
+{% endblock title %}
+
+{% block body %}
+
+    <h3>
+	{% if categoryName.parent %}
+		Kategori: <a id = "a01" href = "/{{categoryName.parent.slug}}">{{categoryName.parent}}</a> / <a id = "a01" href="/{{categoryName.slug}}">{{categoryName.slug2}}</a>
+        {% else %}
+		Kategori: <a id = "a01" href="/{{categoryName.slug}}">{{categoryName}}</a>
+    		{% for category in categoryList %}
+			{% if category.parent == categoryName %}
+				<br> &emsp; <i class="fas fa-grip-lines"></i> <a id = "a01" href="/{{category.slug}}">{{category.slug2}}</a>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+    </h3>
+    {% if contacts %}
+
+    <div class="card my-4" style = "width: 250px; float:left;">
+        <h5 class="card-header"><i class="fas fa-list-ul"></i>  Başlıklar</h5>
+        <div class="card-body" style="padding: 15px;">
+            <a id = "a01" href = "/{{category.slug}}">{{category.slug2}}</a>
+            {% for article in contacts %}
+                <i class="fas fa-dot-circle"></i>  <a id = "a01" href="/{{article.category.slug}}/{{article.seo}}">{{article}}</a>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+        <div class="row" style="padding-left: 15px;">
+            <div class="col-lg-8">
+                {% for article in contacts %}
+                    <h3 id = "h01" ><a id = "a01" href="/{{article.category.slug}}/{{article.seo}}">{{article.title}}</a></h3>
+                    {% if article.category.parent %}
+                        <i class="fas fa-grip-lines"></i> Kategori: <a id = "a01" href = "/{{article.category.parent.slug}}">{{article.category.parent}}</a> / <a id = "a01" href="/{{article.category.slug}}">{{article.category.slug2}}</a>, {{article.created_date}}
+                    {% else %}
+                        <i class="fas fa-grip-lines"></i>  Kategori: <a id = "a01" href="/{{article.category.slug}}">{{article.category}}</a>, {{article.created_date}}
+                    {% endif %}
+                    {% if article.article_image %}
+                        <img class="img-fluid rounded" src="{{article.article_image.url}}" alt="">
+                    {% endif %}
+                    <p class="lead">
+                        {{article.content|safe|truncatewords:25}}
+                        <a id = "a01" href="/{{article.category.slug}}/{{article.seo}}" style = "padding-left: 15px;">Devamını Oku</a>
+                    </p>
+                    <br>
+                    <span><i class="fas fa-user-edit"></i> {{article.author}}  |  <i class="fa fa-eye"></i> {{article.views}}  |  <i class="fas fa-comments"></i> {{article.comments.all.count}} | <i class="fas fa-stopwatch"></i> {{article.read}} min read</span>
+                    <hr>
+                {% endfor %}
+                <span>
+                    {% if contacts.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ contacts.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Sayfa {{ contacts.number }}
+                    </span>
+            
+                    {% if contacts.has_next %}
+                        <a href="?page={{ contacts.next_page_number }}">next</a>
+                        <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    {% endif %}
+    
+{% endblock body %}

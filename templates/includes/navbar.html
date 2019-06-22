@@ -1,0 +1,30 @@
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+    <div class="container" style="width: 2000px;">
+        <ul class="navbar-nav mr-auto" style = "padding-left: 55px;">
+          <a class="navbar-brand" href="{% url 'index' %}">JFBlog</a>
+        </ul>
+        <ul class="navbar-nav ml-auto" style = "padding-right: 55px;">
+	<li class="nav-item dropdown">
+        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          		Son
+        	</a>
+        	<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			<a class="dropdown-item" href="{% url 'article:articles' %}"><i class="fas fa-laptop-code"></i> Yazılarım</a>
+			<a class="dropdown-item" href="/travels"><i class="fas fa-globe-europe"></i> Gezilerim</a>
+          		<a class="dropdown-item" href="/mixes"><i class="fas fa-headphones"></i> Mixlerim</a>
+          		<div class="dropdown-divider"></div>
+          		<a class="dropdown-item" href="{% url 'about' %}"><i class="fas fa-info-circle"></i> Hakkımda</a>
+        	</div>
+     	  </li>
+	  <li class="nav-item active">
+            <a class="nav-link" href="/categories">Kategoriler </a>
+          </li>
+          <li class="nav-item active">
+            <form class="form-inline" style="float: right;">
+              {% csrf_token %}
+              <input class="form-control mr-sm-2" type="text" name="keyword" placeholder="Ara" aria-label="Search">
+            </form>
+          </li>
+        </ul>
+    </div>
+</nav>

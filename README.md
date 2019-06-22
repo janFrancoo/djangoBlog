@@ -1,2 +1,1 @@
-"# djangoBlog" 
-"# djangoBlog" 
+janfranco.com
